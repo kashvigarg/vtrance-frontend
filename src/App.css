@@ -1,5 +1,21 @@
-.App {
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
   text-align: center;
+  flex-direction: column;
+}
+
+#root, .app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  color: white;
+}
+
+a {
+  color: rgb(110, 110, 237);
 }
 
 .App-logo {
@@ -7,21 +23,115 @@
   pointer-events: none;
 }
 
+.app-container {
+  min-height: 100vh;
+  text-align: center;
+  background-color: black;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.main-heading {
+  font-family: 'Nosifer';
+  font-size: 7vw;
+  color: white;
+}
+
+.sub-heading {
+  font-family: 'Nosifer';
+  font-size: 3vw;
+  color: white;
+}
+
+.button-text {
+  font-size: medium;
+}
+
+.app-button {
+  padding: 10px 15px;
+  width: 30%;
+  align-self: center;
+  border: 1px solid black;
+  background-color: lightgray;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.app-button:hover {
+  background-color: darkgray;
+}
+
+.logout-button {
+  display: flex;
+  align-items: center;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.logout-button:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+.logout-icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.file-drop-zone {
+  border: 2px dashed #ccc;
+  border-radius: 30px;
+  padding: 20px;
+  max-width: 60vw;
+  min-width: 40vw;
+  min-height: 30vh;
+  max-height: 50vh;
+  margin: 40px;
+  height: auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.file-drop-zone.dragging {
+  border-color: #007bff;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  position: relative;
+}
+
+.header-spacer {
+  width: 100px;
+}
+
+.dashboard-title {
+  flex: 1;
+  text-align: center;
+  margin: 0;
+  font-size: 24px;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .App-link {
