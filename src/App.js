@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
 import PrivateRoute from "./router/route";
 import Landing from './components/Landing';
+import { ToastContainer, toast } from 'react-toastify';
 import Signup from './components/Signup';
 
 function App() {
@@ -22,7 +23,9 @@ function App() {
             {/* Other routes */}
           </Routes>
       </AuthProvider>
+      <ToastContainer />
       </Router>
+      
     // </div>
   );
 }

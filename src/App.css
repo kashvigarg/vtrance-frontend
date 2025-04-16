@@ -123,9 +123,33 @@ a {
   cursor: pointer;
 } */
 
+.options-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
 .options-container {
   padding: 20px;
   font-family: sans-serif;
+}
+
+
+.restart-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #444;
+  transition: color 0.2s ease;
+}
+
+.restart-btn:hover {
+  color: #000;
 }
 
 .options {
@@ -158,6 +182,14 @@ a {
   border-color: #555;
 }
 
+.button-bar {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  gap: 30px;
+  max-width: 50vw;
+  justify-content: space-evenly;
+}
 .label-text {
   font-size: 16px;
 }
