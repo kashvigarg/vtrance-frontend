@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useAuth } from "../hooks/AuthProvider";
 import DragDropComponent from "./ui/DragDrop";
 import "../App.css";
+import Options from "./ui/Options";
 
 const Dashboard = () => {
   const auth = useAuth();
@@ -16,7 +17,10 @@ const Dashboard = () => {
           Logout
         </button>
       </div>
+      <div className="dashboard-body">
       <DragDropComponent/>
+      <Options/>
+      </div>
     </div>
   );
 };

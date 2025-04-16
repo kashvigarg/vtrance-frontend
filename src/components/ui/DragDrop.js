@@ -54,7 +54,7 @@ const DragDropComponent = () => {
           <img
             src="./icons/upload.png"
             alt=""
-            style={{ height: "30%", width: "auto", margin: "20px" }}
+            style={{ height: "20vh", width: "auto", margin: "20px" }}
           />
           <br />
           Drag and Drop or{" "}
@@ -101,6 +101,7 @@ const DragDropComponent = () => {
           </button>
           <div style={{ marginTop: "10px", fontSize: "14px", color: "#444" }}>
             {`Size: ${formatFileSize(selectedFile.size)}`}
+            <br/>
           </div>
         </div>
       )}

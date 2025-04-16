@@ -104,6 +104,64 @@ a {
   justify-content: center;
   cursor: pointer;
 }
+/* .options {
+  border: 2px dashed #ccc;
+  border-radius: 30px;
+  padding: 20px;
+  max-width: 40vw;
+  min-width: 25vw;
+  min-height: 30vh;
+  max-height: 50vh;
+  margin: 40px;
+  height: auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+  justify-content: center;
+  cursor: pointer;
+} */
+
+.options-container {
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.option input[type="radio"] {
+  display: none;
+}
+
+.dot {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  border: 2px solid #888;
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.option input[type="radio"]:checked + .dot {
+  background-color: #555;
+  border-color: #555;
+}
+
+.label-text {
+  font-size: 16px;
+}
+
 
 .file-drop-zone.dragging {
   border-color: #007bff;
@@ -126,6 +184,14 @@ a {
   text-align: center;
   margin: 0;
   font-size: 24px;
+}
+
+.dashboard-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
 }
 
 @media (prefers-reduced-motion: no-preference) {
