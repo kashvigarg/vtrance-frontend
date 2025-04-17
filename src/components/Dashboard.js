@@ -4,15 +4,23 @@ import DragDropComponent from "./ui/DragDrop";
 import "../App.css";
 import customToast from "./ui/custom-toast";
 import Options from "./ui/Options";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const auth = useAuth();
+  const navigate = useNavigate();
+
+  const goToProfile = () => {
+    // customToast("Go to Profile!")
+    navigate("/profile")
+  }
 
   // TODO: Add selectFile and selectFormat Hooks in Parent
 
   return (
     <div className="app-container">
       <div className="dashboard-header">
+        <button onClick={() => goToProfile()}>Profile</button>
         <div className="header-spacer" />
         <h1 className="sub-heading">V-Trance {auth.user?.username}</h1>
         <button onClick={() => auth.logOut()} className="logout-button">

@@ -4,10 +4,10 @@ import "../../App.css";
 const formats = ["H.264", "H.265", "H.264 lossless", "MPEG-2", "MPEG-4"];
 
 const Options = () => {
-  const [selectedFormat, setSelectedFormat] = useState("");
+  const [selectedFormat, setSelectedFormat] = useState("H.264");
 
   const handleClear = () => {
-    setSelectedFormat("");
+    setSelectedFormat("H.264");
   };
 
   return (

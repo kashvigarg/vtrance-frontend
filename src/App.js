@@ -6,6 +6,7 @@ import PrivateRoute from "./router/route";
 import Landing from './components/Landing';
 import { ToastContainer, toast } from 'react-toastify';
 import Signup from './components/Signup';
+import Profile from './components/Profile';
 
 function App() {
   return (
@@ -16,16 +17,16 @@ function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/signup" element={<Signup />} />
             {/* <Route path="/signup" element={<Signup />} /> */}
-            <Route >
+            {/* <Route > */}
              {/* element={<PrivateRoute />}> */}
               <Route path="/dashboard" element={<Dashboard />} />
-            </Route>
+            {/* </Route> */}
+            <Route path="/profile" element={<Profile />} />
             {/* Other routes */}
           </Routes>
       </AuthProvider>
       <ToastContainer />
       </Router>
-      
     // </div>
   );
 }
