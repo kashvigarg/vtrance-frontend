@@ -1,21 +1,34 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setDragging,
+  setSelectedFile,
+  clearSelectedFile,
+} from "../../store/fileSlice";
 import formatFileSize from "./helper";
+import customToast from "./custom-toast";
+
+const MAX_SIZE = 300 * 1024 * 1024;
 
 const DragDropComponent = () => {
-  const [isDragging, setDragging] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const dispatch = useDispatch();
+  const { isDragging, selectedFile } = useSelector((state) => state.fileUpload);
   const fileInputRef = useRef(null);
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setSelectedFile(file);
+      if (file.size > MAX_SIZE) {
+        customToast("File size exceeds 300MB!");
+        return;
+      }
+      dispatch(setSelectedFile(file));
     }
   };
 
   const handleDragEnter = (e) => {
     e.preventDefault();
-    setDragging(true);
+    dispatch(setDragging(true));
   };
 
   const handleDragOver = (e) => {
@@ -23,26 +36,30 @@ const DragDropComponent = () => {
   };
 
   const handleDragLeave = () => {
-    setDragging(false);
+    dispatch(setDragging(false));
   };
 
   const handleDrop = (e) => {
     e.preventDefault();
-    setDragging(false);
+    dispatch(setDragging(false));
 
     const files = e.dataTransfer.files;
     if (files && files.length > 0) {
-      setSelectedFile(files[0]);
+      const file = files[0];
+      if (file.size > MAX_SIZE) {
+        customToast("File size exceeds 300MB!");
+        return;
+      }
+      dispatch(setSelectedFile(file));
     }
   };
 
   const removeSelectedFile = () => {
-    // fileInputRef.current.value = null; // Reset file input value
-    setSelectedFile(null);
+    dispatch(clearSelectedFile());
   };
 
   return (
-    <div 
+    <div
       className={`file-drop-zone ${isDragging ? "dragging" : ""}`}
       onDragEnter={handleDragEnter}
       onDragOver={handleDragOver}
@@ -58,7 +75,9 @@ const DragDropComponent = () => {
           />
           <br />
           Drag and Drop or{" "}
-          <button onClick={() => fileInputRef.current.click()}>Upload a Video</button>
+          <button onClick={() => fileInputRef.current.click()}>
+            Upload a Video
+          </button>
           <input
             type="file"
             accept="video/*"
@@ -68,19 +87,23 @@ const DragDropComponent = () => {
           />
         </>
       ) : (
-        <div style={{ position: "relative", display: "inline-block", marginTop: "10px" }}>
+        <div
+          style={{
+            position: "relative",
+            display: "inline-block",
+            marginTop: "10px",
+          }}
+        >
           <video
             src={URL.createObjectURL(selectedFile)}
             controls
             style={{
-                borderRadius: "10px",
-                // minHeight: "30%",
-                // maxHeight: "50%",
-                maxWidth: "40vw",
-                width: "auto",
-                height: "auto",
-                objectFit: "contain"
-              }}
+              borderRadius: "10px",
+              maxWidth: "40vw",
+              width: "auto",
+              height: "auto",
+              objectFit: "contain",
+            }}
           />
           <button
             onClick={removeSelectedFile}
@@ -98,10 +121,10 @@ const DragDropComponent = () => {
               fontWeight: "bold",
             }}
           >
+            ×
           </button>
           <div style={{ marginTop: "10px", fontSize: "14px", color: "#444" }}>
             {`Size: ${formatFileSize(selectedFile.size)}`}
-            <br/>
           </div>
         </div>
       )}
