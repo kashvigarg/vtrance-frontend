@@ -8,8 +8,6 @@ const Login = () => {
     password: "",
   });
 
-  const {email_err, pass_err} = useState("")
-
   const auth = useAuth();
   const handleSubmitEvent = (e) => {
     e.preventDefault();

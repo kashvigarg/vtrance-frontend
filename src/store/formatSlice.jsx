@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const formatSlice = createSlice({
-  name: 'format',
+  name: 'formatSlice',
   initialState: {
     value: "H.264",
   },

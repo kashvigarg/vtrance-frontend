@@ -6,7 +6,7 @@ import { setFormat, clearFormat } from '../../store/formatSlice';
 const formats = ["H.264", "H.265", "H.264 lossless", "MPEG-2", "MPEG-4"];
 
 const Options = () => {
-  const selectedFormat = useSelector((state) => state.format.value);
+  const selectedFormat = useSelector((state) => state.formatSlice.value);
   const dispatch = useDispatch();
 
   return (

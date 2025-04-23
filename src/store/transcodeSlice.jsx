@@ -12,16 +12,23 @@ export const fetchUser = sendTranscodeBuffer(
 
 // Method Slice
 const transcodeSlice = createSlice({
-  name: "transcode",
+  name: "transcodeSlice",
   initialState: {
     streaming: false,
     loading: false,
     error: null,
+    format: 'H.264'
   },
   reducers: {
     setStreaming: (state, action) => {
-      state.streaming = action.payload;
+      state.streaming = action.payload.streaming;
     },
+    changeFormat: (state, action) => {
+      state.format = action.payload.format;
+    },
+    setError: (state, action) => {
+      state.error = action.payload.error;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -29,15 +36,6 @@ const transcodeSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(sendTranscodeBuffer.fulfilled, (state, action) => {
-        state.loading = false;
-        state.name = action.payload.name;
-        state.email = action.payload.email;
-      })
-      .addCase(sendTranscodeBuffer.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-      });
   },
 });
 

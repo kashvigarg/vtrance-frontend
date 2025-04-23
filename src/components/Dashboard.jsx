@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 const Dashboard = () => {
   const auth = useAuth();
   const navigate = useNavigate();
+  
 
   const goToProfile = () => {
     // customToast("Go to Profile!")

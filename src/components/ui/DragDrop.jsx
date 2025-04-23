@@ -6,23 +6,34 @@ import {
   clearSelectedFile,
 } from "../../store/fileSlice";
 import formatFileSize from "./helper";
+import { getVideoMetadata } from "../utils/getVideoMetadata";
 import customToast from "./custom-toast";
 
-const MAX_SIZE = 300 * 1024 * 1024;
+const MAX_SIZE = 111e6;
 
 const DragDropComponent = () => {
   const dispatch = useDispatch();
-  const { isDragging, selectedFile } = useSelector((state) => state.fileUpload);
+  const { isDragging, fileUrl, fileName, fileType, fileSize, fileWidth, fileHeight, fileDuration } = useSelector(
+    (state) => state.fileUploadSlice
+  );
+  
   const fileInputRef = useRef(null);
 
-  const handleFileUpload = (e) => {
+  const handleFileUpload = async (e) => {
     const file = e.target.files[0];
-    if (file) {
+    if (!file) return;
       if (file.size > MAX_SIZE) {
-        customToast("File size exceeds 300MB!");
+        customToast("File size exceeds threshold!");
         return;
       }
-      dispatch(setSelectedFile(file));
+    
+
+    try {
+      const metadata = await getVideoMetadata(file);
+      dispatch(setSelectedFile(metadata));
+    } catch (err) {
+      console.log(err)
+      customToast("Error processing video file.");
     }
   };
 
@@ -39,18 +50,25 @@ const DragDropComponent = () => {
     dispatch(setDragging(false));
   };
 
-  const handleDrop = (e) => {
+  const handleDrop = async (e) => {
     e.preventDefault();
     dispatch(setDragging(false));
 
     const files = e.dataTransfer.files;
-    if (files && files.length > 0) {
-      const file = files[0];
-      if (file.size > MAX_SIZE) {
-        customToast("File size exceeds 300MB!");
-        return;
-      }
-      dispatch(setSelectedFile(file));
+    if (!files || files.length === 0) return;
+  
+    const file = files[0];
+    if (file.size > MAX_SIZE) {
+      customToast("File size exceeds threshold!");
+      return;
+    }
+  
+    try {
+      const metadata = await getVideoMetadata(file);
+      dispatch(setSelectedFile(metadata));
+    } catch (err) {
+      console.log(err)
+      customToast("Error processing video file.");
     }
   };
 
@@ -66,7 +84,7 @@ const DragDropComponent = () => {
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      {!selectedFile ? (
+      {!fileUrl ? (
         <>
           <img
             src="./icons/upload.png"
@@ -95,7 +113,7 @@ const DragDropComponent = () => {
           }}
         >
           <video
-            src={URL.createObjectURL(selectedFile)}
+            src={fileUrl}
             controls
             style={{
               borderRadius: "10px",
@@ -124,7 +142,7 @@ const DragDropComponent = () => {
             ×
           </button>
           <div style={{ marginTop: "10px", fontSize: "14px", color: "#444" }}>
-            {`Size: ${formatFileSize(selectedFile.size)}`}
+            {`Size: ${formatFileSize(fileSize)}`}
           </div>
         </div>
       )}
