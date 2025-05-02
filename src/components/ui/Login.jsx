@@ -1,20 +1,31 @@
 import { useState } from "react";
-import { useAuth } from "../../hooks/AuthProvider";
 import '../../App.css'
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '../../store/authSlice';
+import { loginUser } from '../services/authService';
 
 const Login = () => {
+  const dispatch = useDispatch();
   const [input, setInput] = useState({
-    username: "",
+    useremail: "",
     password: "",
   });
 
-  const auth = useAuth();
-  const handleSubmitEvent = (e) => {
+  const handleSubmitEvent = async (e) => {
     e.preventDefault();
-    if (input.username !== "" && input.password !== "") {
-      // Please enter a valid username. It must contain at least 6 characters.
-      // your password should be more than 6 character
-      auth.loginAction(input);
+    
+    if (input.useremail !== "" && input.password !== "") {
+      try {
+        const credentials = {
+          email: input.useremail,
+          password: input.password,
+        };
+        const data = await loginUser(credentials);
+        dispatch(setCredentials(data));
+      } catch (err) {
+        console.error('Login failed', err);
+        alert('Login failed');
+      }
       return;
     }
     console.log(input)
@@ -37,7 +48,7 @@ const Login = () => {
         <input
           type="email"
           id="user-email"
-          name="username"
+          name="useremail"
           placeholder="guest@google.com"
           aria-describedby="user-email"
           aria-invalid="false"
