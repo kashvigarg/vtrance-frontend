@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 const PrivateRoute = () => {
   let isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  if (isAuthenticated===false) return <Navigate to="/login" />;
+  if (isAuthenticated===false) return <Navigate to="/" />;
   return <Outlet />;
 };
 
