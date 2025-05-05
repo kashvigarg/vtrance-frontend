@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { store } from '../app/store';
-import { updateAccessToken, logout } from '../features/auth/authSlice';
+import { store } from '../store/store';
+import { updateAccessToken, logout } from '../store/authSlice';
 
 const api = axios.create({
   baseURL: '',

@@ -1,16 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-// API Methods
-export const fetchUser = sendTranscodeBuffer(
-  "transcode/url",
-  async (buffer, thunkAPI) => {
-    const response = await fetch(`https://api.example.com/transcode/${buffer}`);
-    if (!response.ok) throw new Error("Failed to send buffer");
-    return await response.json();
-  }
-);
-
-// Method Slice
 const transcodeSlice = createSlice({
   name: "transcodeSlice",
   initialState: {
@@ -29,13 +18,6 @@ const transcodeSlice = createSlice({
     setError: (state, action) => {
       state.error = action.payload.error;
     }
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(sendTranscodeBuffer.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
   },
 });
 

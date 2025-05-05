@@ -28,7 +28,7 @@ const fileSlice = createSlice({
       state.fileType = action.payload.fileType;
     },
     clearSelectedFile: (state) => {
-      URL.revokeObjectURL(fileUrl);
+      // URL.revokeObjectURL(fileUrl);
       state.fileUrl = null;
       state.fileDuration = 0;
       state.fileHeight = 0;

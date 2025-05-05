@@ -6,9 +6,9 @@ import authReducer from './authSlice';
 
 export const store = configureStore({
   reducer: {
-    format: formatReducer,
-    fileUpload: fileReducer,
-    transcodeReducer: transcodeReducer,
+    formatSlice: formatReducer,
+    fileUploadSlice: fileReducer,
+    transcodeSlice: transcodeReducer,
     auth: authReducer,
   },
 });
