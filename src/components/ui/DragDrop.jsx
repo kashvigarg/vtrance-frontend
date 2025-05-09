@@ -14,7 +14,7 @@ const MAX_SIZE = 111e6;
 const DragDropComponent = () => {
   const dispatch = useDispatch();
   const { isDragging, fileUrl, fileName, fileType, fileSize, fileWidth, fileHeight, fileDuration } = useSelector(
-    (state) => state.fileUploadSlice
+    (state) => state.fileController
   );
   
   const fileInputRef = useRef(null);
@@ -77,6 +77,15 @@ const DragDropComponent = () => {
   };
 
   return (
+    <div>
+    <div style={{textAlign: 'center', alignSelf: 'center'}}>
+      <h2>Transcode Locally or Stream It Live!</h2>
+      <p style={{ maxWidth: '48vw', textAlign: 'center', margin: '0 auto'}}>
+        You can either download your media for offline use,
+        or receive a streaming link for the transcoded content that can be accessed 
+        anytime from your profile
+      </p>
+    </div>
     <div
       className={`file-drop-zone ${isDragging ? "dragging" : ""}`}
       onDragEnter={handleDragEnter}
@@ -146,6 +155,7 @@ const DragDropComponent = () => {
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 };

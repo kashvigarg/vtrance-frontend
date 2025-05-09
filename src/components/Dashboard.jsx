@@ -23,10 +23,6 @@ const Dashboard = () => {
         <DragDropComponent />
         <Options />
       </div>
-      <div className="button-bar">
-        <button>Transcode</button>
-        <button>Transcode+Stream</button>
-      </div>
     </div>
   );
 };

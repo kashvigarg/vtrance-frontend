@@ -9,7 +9,7 @@ import CustomLoader from "./ui/loading-widget";
 const Profile = () => {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.authController);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
