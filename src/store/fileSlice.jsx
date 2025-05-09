@@ -11,8 +11,8 @@ const initialState = {
   fileWidth: 0,
 };
 
-const fileSlice = createSlice({
-  name: "fileUploadSlice",
+const fileController = createSlice({
+  name: "fileController",
   initialState,
   reducers: {
     setDragging: (state, action) => {
@@ -40,5 +40,5 @@ const fileSlice = createSlice({
   },
 });
 
-export const { setDragging, setSelectedFile, clearSelectedFile } = fileSlice.actions;
-export default fileSlice.reducer;
+export const { setDragging, setSelectedFile, clearSelectedFile } = fileController.actions;
+export default fileController.reducer;

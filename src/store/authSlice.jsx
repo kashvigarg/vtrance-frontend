@@ -6,8 +6,8 @@ const initialState = {
   isAuthenticated: false,
 };
 
-const authSlice = createSlice({
-  name: 'auth',
+const authController = createSlice({
+  name: 'authController',
   initialState,
   reducers: {
     setCredentials: (state, action) => {
@@ -26,5 +26,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setCredentials, logout, updateAccessToken } = authSlice.actions;
-export default authSlice.reducer;
+export const { setCredentials, logout, updateAccessToken } = authController.actions;
+export default authController.reducer;
