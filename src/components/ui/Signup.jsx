@@ -1,9 +1,7 @@
 import React from "react";
-import '../App.css'
+import '../../App.css'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import { setCredentials } from '../store/authSlice';
-import { signupUser } from '../services/authService';
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -29,8 +27,8 @@ const Signup = () => {
   };
 
   return (
-    <div className="app-container">
-      <h1 style={{color:"aquamarine"}}> 	Create a New Account </h1>
+    <div>
+      {/* <h1 style={{color:"aquamarine"}}> 	Create a New Account </h1> */}
     <form onSubmit={handleSubmit}>
       <input name="username" placeholder="Username" required /> <br/>
       <input name="email" type="email" placeholder="Email" required /> <br/>
