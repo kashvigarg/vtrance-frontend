@@ -1,13 +1,19 @@
 import React, { useEffect } from "react";
 import DragDropComponent from "./ui/DragDrop";
+import { useSelector, useDispatch } from "react-redux";
 import "../App.css";
-import customToast from "./ui/custom-toast";
 import CustomHeader from "./ui/custom-header";
 import Options from "./ui/Options";
 import { useNavigate } from "react-router-dom";
+import CustomLoader from "./ui/loading-widget";
+import CustomEmbedWidget from "./ui/EmbedWidget";
+import VideoPlayer from "./ui/VideoPlayer";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const loading = useSelector((state) => state.processController.loading);
+  const processed = useSelector((state) => state.processController.processed);
+  const streaming = useSelector((state) => state.processController.streaming);
 
   const goToProfile = () => {
     // customToast("Go to Profile!")
@@ -18,10 +24,23 @@ const Dashboard = () => {
 
   return (
     <div className="app-container">
-      <CustomHeader/>
+      <CustomHeader />
       <div className="dashboard-body">
-        <DragDropComponent />
-        <Options />
+        {processed && streaming ? 
+        // <VideoPlayer /> 
+        <VideoPlayer src="https://www.w3schools.com/html/mov_bbb.mp4" autoPlay />
+        
+        : <DragDropComponent />}
+        
+        {loading ? (
+          <div style={{ alignItems: "center" }}>
+            <CustomLoader size="10vw" />
+            <h2>Hold on while we process your media...</h2>
+          </div>
+        ) : (
+          processed && streaming? <CustomEmbedWidget/> : 
+          <Options />
+        )}
       </div>
     </div>
   );

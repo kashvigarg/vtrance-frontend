@@ -21,30 +21,17 @@ const Options = () => {
   );
   const resolution = useSelector((state) => state.processController.resolution);
   const [mode, setMode] = useState("transcode");
-  const loading = useSelector((state) => state.processController.loading);
-  const processed = useSelector((state) => state.processController.processed);
   const dispatch = useDispatch();
 
   return (
-    <div>
-    {loading ? 
-    <div style={{alignItems: "center"}}>
-      <CustomLoader size="10vw"/>
-      <h2>Hold on while we process your media...</h2>
-      
-      </div>
-      : 
-      processed ? 
-      <CustomEmbedWidget/>
-      :
-      
-      <div className="options-container">
+    <div className="options-container">
       <div className="options-header">
         <h2
           style={{
             textAlign: "center",
             margin: "0 auto",
             paddingBottom: "20px",
+            color: "aquamarine"
           }}
         >
           Choose Mode
@@ -140,7 +127,6 @@ const Options = () => {
         <button onClick={() => {}} title="Proceed">
           Proceed
         </button>
-    </div>}
     </div>
   );
 };
