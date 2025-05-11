@@ -7,9 +7,9 @@ const processController = createSlice({
     processed: false, 
     loading: false,
     error: null,
-    outputFormat: 'mp4',
+    outputFormat: 'MP4',
     codecFormat: 'H.264',
-    resolution : '480p'
+    resolution : 480
   },
   reducers: {
     setStreaming: (state, action) => {
@@ -31,8 +31,8 @@ const processController = createSlice({
     },
     setDefaultOptions : (state, action) => {
       state.codecFormat = 'H.264';
-      state.outputFormat = 'mp4';
-      state.resolution = '480p';
+      state.outputFormat = 'MP4';
+      state.resolution = 480;
     }
   },
 });

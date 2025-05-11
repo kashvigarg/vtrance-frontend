@@ -40,4 +40,20 @@ export const getVideoMetadata = (file: File): Promise<{
       video.src = fileUrl;
     });
   };
-  
+
+export const getValidResolutions = (res : number) : number[] => {
+  let resolutions = [360, 480, 720, 1080];
+  const valid = resolutions.filter(r=> r>=res);
+  return valid;
+}
+
+export const getValidCodecFormats = (videoFormat : string) : string[] => {
+  const codecMap: {[key: string] : string[]} = {
+    "MP4" : ["H.264", "H.265", "AV1"],
+    "WebM" : ["VP9", "AV1"],
+    "MKV" : ["H.264", "H.265", "VP9", "AV1"],
+    "DASH" : ["H.264", "H.265", "VP9", "AV1"],
+  }
+  if (!(videoFormat in codecMap)) return [];
+  return codecMap[videoFormat]
+}

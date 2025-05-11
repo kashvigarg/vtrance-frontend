@@ -3,25 +3,30 @@ import "../../App.css";
 import { useSelector, useDispatch } from "react-redux";
 import CustomLoader from "./CustomLoader";
 import CustomEmbedWidget from "./EmbedWidget";
+import { getValidResolutions, getValidCodecFormats } from "../utils/helperMethods";
 import {
   changeTranscodeOptions,
   setDefaultOptions,
 } from "../../store/processSlice";
 
-const codecformats = ["H.264", "H.265", "H.264 lossless", "MPEG-2", "MPEG-4"];
-const outputFormats = ["mp4"];
-const resolutions = ["480p", "720p", "1080p"];
+const outputFormats = ["MP4", "MKV", "WebM", "DASH"];
 
 const Options = () => {
-  const codecFormat = useSelector(
-    (state) => state.processController.codecFormat
-  );
+
   const outputFormat = useSelector(
     (state) => state.processController.outputFormat
+  );
+  const codecFormat = useSelector(
+    (state) => state.processController.codecFormat
   );
   const resolution = useSelector((state) => state.processController.resolution);
   const [mode, setMode] = useState("transcode");
   const dispatch = useDispatch();
+  const fileHeight = useSelector((state) => state.fileController.fileHeight);
+
+  let resolutions = getValidResolutions(fileHeight);
+  console.log(fileHeight)
+  let codecformats = getValidCodecFormats(outputFormat);
 
   return (
     <div className="options-container">
@@ -75,9 +80,14 @@ const Options = () => {
                   name="out"
                   value={out}
                   checked={outputFormat === out}
-                  onChange={() =>
-                    dispatch(changeTranscodeOptions({ outputFormat: out }))
-                  }
+                  onChange={() => {
+                    if (out === "WebM") {
+                      dispatch(changeTranscodeOptions({ outputFormat: out, codecFormat: "VP9" }));
+                    } else {
+                      dispatch(changeTranscodeOptions({ outputFormat: out }));
+                    }
+                  }}
+
                 />
                 <span className="dot" />
                 <span className="label-text">{out}</span>
@@ -115,7 +125,7 @@ const Options = () => {
                 name="stream"
                 value={"H.264"}
                 checked={true}
-                onChange={() => {}}
+                onChange={() => { }}
               />
               <span className="dot" />
               <span className="label-text">{"H.264"}</span>
@@ -124,9 +134,9 @@ const Options = () => {
         </div>
       )}
 
-        <button onClick={() => {}} title="Proceed">
-          Proceed
-        </button>
+      <button onClick={() => { }} title="Proceed">
+        Proceed
+      </button>
     </div>
   );
 };
