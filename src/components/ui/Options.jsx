@@ -3,6 +3,12 @@ import "../../App.css";
 import { useSelector, useDispatch } from "react-redux";
 import CustomLoader from "./CustomLoader";
 import CustomEmbedWidget from "./EmbedWidget";
+import {
+  setJobId,
+  setStreaming,
+  setLoading,
+} from "../../store/processSlice";
+import { uploadVideo } from "../../services/videoService";
 import { getValidResolutions, getValidCodecFormats } from "../utils/helperMethods";
 import {
   changeTranscodeOptions,
@@ -12,6 +18,14 @@ import {
 const outputFormats = ["MP4", "MKV", "WebM", "DASH"];
 
 const Options = () => {
+  const { sDragging,
+    fileUrl,
+    fileName,
+    fileSize, // MB
+    fileType,
+    fileDuration,
+    fileHeight,
+    fileWidth } = useSelector((state) => state.fileController);
 
   const outputFormat = useSelector(
     (state) => state.processController.outputFormat
@@ -22,11 +36,19 @@ const Options = () => {
   const resolution = useSelector((state) => state.processController.resolution);
   const [mode, setMode] = useState("transcode");
   const dispatch = useDispatch();
-  const fileHeight = useSelector((state) => state.fileController.fileHeight);
 
   let resolutions = getValidResolutions(fileHeight);
   console.log(fileHeight)
   let codecformats = getValidCodecFormats(outputFormat);
+
+  const handleVideoUpload = async () => {
+    if (!fileUrl) return;
+    const res = await uploadVideo(fileName, mode, outputFormat, codecFormat, resolution, fileHeight, fileType);
+    const jobid = res.jobid;
+    dispatch(setJobId(jobid));
+    dispatch(setStreaming({mode: "transcoding"}))
+    dispatch(setLoading({loading: true}));
+  }
 
   return (
     <div className="options-container">
@@ -48,14 +70,14 @@ const Options = () => {
         onChange={(e) => setMode(e.target.value)}
       >
         <option value="transcode">Transcode Only</option>
-        <option value="stream">Transcode + Stream</option>
+        <option value="streaming">Transcode + Stream</option>
       </select>
       <div style={{ paddingBottom: "10px" }} />
       {mode === "transcode" && (
         <div className="options">
           <div>
             <i>Select Transcoding Format</i>
-            <br/><br/>
+            <br /><br />
             {codecformats.map((format) => (
               <label key={format} className="option">
                 <input
@@ -74,7 +96,7 @@ const Options = () => {
           </div>
           <div>
             <i>Select Output Format</i>
-            <br/><br/>
+            <br /><br />
             {outputFormats.map((out) => (
               <label key={out} className="option">
                 <input
@@ -98,7 +120,7 @@ const Options = () => {
           </div>
           <div>
             <i>Select Resolution</i>
-            <br/><br/>
+            <br /><br />
             {resolutions.map((res) => (
               <label key={res} className="option">
                 <input
@@ -118,11 +140,11 @@ const Options = () => {
         </div>
       )}
 
-      {mode === "stream" && (
+      {mode === "streaming" && (
         <div className="options">
           <div>
             <i>Select Transcoding Format</i>
-            <br/><br/>
+            <br /><br />
             <label key={"H.264"} className="option">
               <input
                 type="radio"
@@ -137,8 +159,8 @@ const Options = () => {
           </div>
         </div>
       )}
-      <br/><br/>
-      <button onClick={() => { }} title="Proceed">
+      <br /><br />
+      <button onClick={() => { handleVideoUpload }} title="Proceed">
         Proceed
       </button>
     </div>

@@ -4,16 +4,24 @@ const processController = createSlice({
   name: "processController",
   initialState: {
     streaming: false,
-    processed: false, 
+    streamUrl: '', 
+    downloadUrl: '',
+    processed: false,
+    jobid : null,
     loading: false,
     error: null,
     outputFormat: 'MP4',
     codecFormat: 'H.264',
+    videoId: null,
     resolution : 480
   },
   reducers: {
     setStreaming: (state, action) => {
-      state.streaming = action.payload.streaming;
+      type = action.payload.mode
+      if (type === "transcoding"){
+        state.streaming = false;
+      } else
+      state.streaming = true;
     },
     setError: (state, action) => {
       state.error = action.payload.error;
@@ -29,13 +37,31 @@ const processController = createSlice({
         state.resolution = action.payload.resolution;
       }
     },
-    setDefaultOptions : (state, action) => {
+    setDefaultOptions : (state) => {
       state.codecFormat = 'H.264';
       state.outputFormat = 'MP4';
       state.resolution = 480;
+    },
+    setJobId : (state, action) => {
+      state.jobid = action.payload;
+    },
+    setLoading: (state, action) => {
+      state.loading = action.payload.loading;
+    },
+    setProcessed : (state, action) => {
+      state.processed = action.payload.processed;
+      if (action.payload.streamUrl!== undefined){
+      state.streamUrl = action.payload.streamUrl;
+      }
+      if (action.payload.downloadUrl!==undefined){
+        state.downloadUrl = action.payload.downloadUrl;
+      }
+    },
+    setVideoId: (state, action) => {
+      state.videoId = action.payload.videoId;
     }
   },
 });
 
-export const { setStreaming, changeTranscodeOptions, setDefaultOptions } = processController.actions;
+export const { setStreaming, changeTranscodeOptions, setDefaultOptions, setJobId, setLoading, setProcessed } = processController.actions;
 export default processController.reducer;

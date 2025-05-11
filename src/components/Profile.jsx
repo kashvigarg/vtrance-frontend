@@ -44,7 +44,10 @@ const Profile = () => {
           ) : (
             <ul>
               {videos.map((video) => (
-                <li key={video.id}>{video.title}</li>
+                <li key={video.id}>TITLE: {video.name}
+                <br/>
+                URL: {video.url}
+                </li>
               ))}
             </ul>
           )}

@@ -1,57 +1,70 @@
 import api from './api';
 
-export const sendVideoDetails = async (videoName) => {
-  // returns the video id
-  const res = await api.post('/', videoName);
+const getUploadUrl = async (videoName, type, resolution) => {
+  const input = {
+    "name":videoName,
+    "type":type, 
+    "resolution":resolution
+  }
+  const res = await api.post('/upload-Url', input);
+  // name, videoid, uploadurl
   return res.data; 
 }
 
-export const uploadVideo = async (video) => {
-  const res = await api.post('/', video);
-  return res.data; 
-};
-
-export const processVideo = async (videoId, processType, outputFmt, codecFmt, resolution) => {
+export const uploadVideo = async (videoName, processType, outputFmt, codecFmt, resolution, videoHeight, videoType) => {
+  // upload video to the upload url
+  urlResponse = await getUploadUrl(videoName, videoType, videoHeight);
+  // get videoid
+  
+  // notify upload
   const data = {
     "videoId" : videoId,
-    "type" : processType,
+    "type" : processType.toUpperCase(),
     "options" : {
       "output" : outputFmt,
       "codec" : codecFmt,
       "resolution" : resolution,
     }
   }
-  const res = await api.post('/', data);
+  const res = await api.post('/notifyUpload', data);
+  // jobid
   return res.data; 
 }
 
-export const getUserVideos = async (userId) => {
-    const res = await api.post('/', userId); 
+export const getUserVideos = async () => {
+    const res = await api.get('/getVideos', userId); 
+    // list of [name, url]
     return res.data; 
 };
-  
 
-// long polling example
-// async function subscribe() {
-//   let response = await fetch("/subscribe");
+export const getJobStatus = async (jobId) => {
+  const poll = async () => {
+    const res = await api.get(`/jobStatus/${jobId}`);
+    const status = res.data?.status;
 
-//   if (response.status == 502) {
-//     // Status 502 is a connection timeout error,
-//     // may happen when the connection was pending for too long,
-//     // and the remote server or a proxy closed it
-//     // let's reconnect
-//     await subscribe();
-//   } else if (response.status != 200) {
-//     // An error - let's show it
-//     showMessage(response.statusText);
-//     // Reconnect in one second
-//     await new Promise(resolve => setTimeout(resolve, 1000));
-//     await subscribe();
-//   } else {
-//     // Get and show the message
-//     let message = await response.text();
-//     showMessage(message);
-//     // Call subscribe() again to get the next message
-//     await subscribe();
-//   }
-// }
+    if (status === "REJECTED" || status === "COMPLETED") {
+      return status;
+    } else {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      return await poll();
+    }
+  };
+
+  return await poll();
+};
+
+
+export const fetchStreamVideoUrl = async(videoId) => {
+  const res = await api.get(`/fetchVideo/${videoId}`)
+
+  return res.data;
+  // name
+  // stream url
+}
+
+export const fetchDownloadVideoUrl = async(videoId) => {
+  const res = await api.get(`/downloadVideo/${videoId}`)
+
+  return res.data;
+  // download url
+}

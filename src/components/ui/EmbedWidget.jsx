@@ -9,7 +9,7 @@ const CustomEmbedWidget = () => {
         Copy the text below
         <br />
         <br />
-        <textarea id="a" onClick={()=>{}} cols="55" rows="6" defaultValue={"ecbjwbvwkebk"} style={{backgroundColor: "gray"}}>
+        <textarea id="a" onClick={()=>{}} cols="55" rows="6" defaultValue={"Please wait..."} style={{backgroundColor: "gray"}}>
         </textarea>
       </div>
 
