@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../../App.css";
 import { useSelector, useDispatch } from "react-redux";
-import CustomLoader from "./loading-widget";
+import CustomLoader from "./CustomLoader";
 import CustomEmbedWidget from "./EmbedWidget";
 import {
   changeTranscodeOptions,

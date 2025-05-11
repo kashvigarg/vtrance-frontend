@@ -5,9 +5,8 @@ import {
   setSelectedFile,
   clearSelectedFile,
 } from "../../store/fileSlice";
-import formatFileSize from "./helper";
-import { getVideoMetadata } from "../utils/getVideoMetadata";
-import customToast from "./custom-toast";
+import { formatFileSize, getVideoMetadata } from "../utils/helperMethods";
+import customToast from "./CustomToast";
 
 const MAX_SIZE = 111e6;
 

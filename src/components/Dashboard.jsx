@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import DragDropComponent from "./ui/DragDrop";
 import { useSelector, useDispatch } from "react-redux";
 import "../App.css";
-import CustomHeader from "./ui/custom-header";
+import CustomHeader from "./ui/CustomHeader";
 import Options from "./ui/Options";
 import { useNavigate } from "react-router-dom";
-import CustomLoader from "./ui/loading-widget";
+import CustomLoader from "./ui/CustomLoader";
 import CustomEmbedWidget from "./ui/EmbedWidget";
 import VideoPlayer from "./ui/VideoPlayer";
 

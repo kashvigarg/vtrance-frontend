@@ -1,4 +1,11 @@
-import formatFileSize from "../ui/helper";
+export function formatFileSize(bytes) : number {
+    if (bytes === 0) return 0;
+    const k = 1024;
+    // const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const size = 'MB'
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2));
+  }
 
 export const getVideoMetadata = (file: File): Promise<{
     fileUrl: string;

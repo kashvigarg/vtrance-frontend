@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { getUserVideos } from "../services/videoService";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import CustomHeader from "./ui/custom-header";
-import customToast from "./ui/custom-toast";
-import CustomLoader from "./ui/loading-widget";
+import CustomHeader from "./ui/CustomHeader";
+import customToast from "./ui/CustomToast";
+import CustomLoader from "./ui/CustomLoader";
 
 const Profile = () => {
   const [videos, setVideos] = useState([]);
@@ -34,9 +34,9 @@ const Profile = () => {
     <div className="app-container">
       <CustomHeader/>
       <h1 style={{ color: "aquamarine" }}> Welcome user.name </h1>
-      <div style={{ justifyItems: "start", padding: "30px" }}>
-        <h3><i> Videos uploaded by you </i></h3>
-        <div style={{ display: "flex", justifySelf: "center", padding:"40px" }}>
+      <div style={{ justifyItems: "start", padding: "30px" , backgroundColor:"black"}}>
+        <h3><i> Videos streamed by you </i></h3>
+        <div style={{ display: "flex", justifySelf: "center", padding:"40px" , backgroundColor:"black", justifyContent:"center"}}>
           {loading ? (
             <CustomLoader />
           ) : videos.length === 0 ? (
