@@ -55,6 +55,7 @@ const Options = () => {
         <div className="options">
           <div>
             <i>Select Transcoding Format</i>
+            <br/><br/>
             {codecformats.map((format) => (
               <label key={format} className="option">
                 <input
@@ -73,6 +74,7 @@ const Options = () => {
           </div>
           <div>
             <i>Select Output Format</i>
+            <br/><br/>
             {outputFormats.map((out) => (
               <label key={out} className="option">
                 <input
@@ -96,6 +98,7 @@ const Options = () => {
           </div>
           <div>
             <i>Select Resolution</i>
+            <br/><br/>
             {resolutions.map((res) => (
               <label key={res} className="option">
                 <input
@@ -119,6 +122,7 @@ const Options = () => {
         <div className="options">
           <div>
             <i>Select Transcoding Format</i>
+            <br/><br/>
             <label key={"H.264"} className="option">
               <input
                 type="radio"
@@ -133,7 +137,7 @@ const Options = () => {
           </div>
         </div>
       )}
-
+      <br/><br/>
       <button onClick={() => { }} title="Proceed">
         Proceed
       </button>

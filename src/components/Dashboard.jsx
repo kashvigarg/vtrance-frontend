@@ -7,6 +7,7 @@ import Options from "./ui/Options";
 import { useNavigate } from "react-router-dom";
 import CustomLoader from "./ui/CustomLoader";
 import CustomEmbedWidget from "./ui/EmbedWidget";
+import CustomDownloadWidget from "./ui/DownloadWidget";
 import VideoPlayer from "./ui/VideoPlayer";
 
 const Dashboard = () => {
@@ -27,7 +28,6 @@ const Dashboard = () => {
       <CustomHeader />
       <div className="dashboard-body">
         {processed && streaming ? 
-        // <VideoPlayer /> 
         <VideoPlayer src="https://www.w3schools.com/html/mov_bbb.mp4" autoPlay />
         
         : <DragDropComponent />}
@@ -38,7 +38,7 @@ const Dashboard = () => {
             <h2>Hold on while we process your media...</h2>
           </div>
         ) : (
-          processed && streaming? <CustomEmbedWidget/> : 
+          processed ? streaming? <CustomEmbedWidget/> : <CustomDownloadWidget/> :
           <Options />
         )}
       </div>
