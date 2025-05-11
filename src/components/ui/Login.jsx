@@ -6,67 +6,42 @@ import { loginUser } from '../../services/authService';
 
 const Login = () => {
   const dispatch = useDispatch();
-  const [input, setInput] = useState({
-    useremail: "",
-    password: "",
-  });
 
-  const handleSubmitEvent = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (input.useremail !== "" && input.password !== "") {
-      try {
-        const credentials = {
-          email: input.useremail,
-          password: input.password,
-        };
-        const data = await loginUser(credentials);
-        dispatch(setCredentials(data));
-      } catch (err) {
-        console.error('Login failed', err);
-        alert('Login failed');
-      }
-      return;
+    const form = e.target;
+    let username = "" 
+    let email = ""
+    if ("@" in form.emailpass.value ){
+      email = form.emailpass.value
+    } else{
+      username = form.emailpass.value
     }
-    console.log(input)
-    alert("Please provide a valid input");
+    const data = {
+      username: username,
+      email: email,
+      password: form.password.value,
+    };
+
+    try {
+      // const result = await loginUser(data);
+      // const tokens = {
+      //   accessToken : result.token,
+      //   refreshToken : result.refresh_token
+      // }
+      // dispatch(setTokens(tokens)); 
+      navigate("/dashboard")
+    } catch (err) {
+      console.error('Signup failed', err);
+      alert('Signup failed');
+    }
   };
 
-  const handleInput = (e) => {
-    const { name, value } = e.target;
-    setInput((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  return (     
-    <form onSubmit={handleSubmitEvent}  >
-    {/* style={{background:"white", padding:"30px", marginLeft:"20%", marginRight:"20%"}} */}
-      <div className="form_control">
-        <label  style={{ color: 'white' }} htmlFor="user-email">Email:</label>
-        <input
-          type="email"
-          id="user-email"
-          name="useremail"
-          placeholder="guest@google.com"
-          aria-describedby="user-email"
-          aria-invalid="false"
-          onChange={handleInput}
-        />
-      </div>
-      <div className="form_control">
-        <label  style={{ color: 'white' }} htmlFor="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          aria-describedby="user-password"
-          aria-invalid="false"
-          onChange={handleInput}
-        />
-      </div>
-      <button className="btn-submit">Submit</button>
+  return (
+    <form className="app-form" onSubmit={handleSubmit}  >
+      <input name="emailpass" type="email" placeholder="Email/Username" required /> <br />
+      <input name="password" type="password" placeholder="Password" required /> <br />
+      <button type="submit">Login</button>
     </form>
   );
 };

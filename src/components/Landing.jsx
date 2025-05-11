@@ -23,7 +23,7 @@ const Landing = () => {
             Not a registered user?{" "}
             <span
               onClick={() => setIsLogin(false)}
-              style={{color:"blue"}}
+              style={{color:"blue", cursor:"pointer"}}
             >
               <u>Sign Up Now</u>
             </span>
@@ -36,7 +36,7 @@ const Landing = () => {
             Already have an Account?{" "}
             <span
               onClick={() => setIsLogin(true)}
-              style={{color:"blue"}}
+              style={{color:"blue", cursor:"pointer"}}
             >
               <u>Login</u>
             </span>

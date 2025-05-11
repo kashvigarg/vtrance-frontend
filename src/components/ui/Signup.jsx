@@ -1,4 +1,3 @@
-import React from "react";
 import '../../App.css'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
@@ -14,6 +13,7 @@ const Signup = () => {
       username: form.username.value,
       email: form.email.value,
       password: form.password.value,
+      name: form.name.value
     };
 
     try {
@@ -28,8 +28,8 @@ const Signup = () => {
 
   return (
     <div>
-      {/* <h1 style={{color:"aquamarine"}}> 	Create a New Account </h1> */}
-    <form onSubmit={handleSubmit}>
+    <form className="app-form" onSubmit={handleSubmit}>
+      <input name="name" placeholder="Name" required /> <br/>
       <input name="username" placeholder="Username" required /> <br/>
       <input name="email" type="email" placeholder="Email" required /> <br/>
       <input name="password" type="password" placeholder="Password" required /> <br/>

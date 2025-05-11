@@ -4,14 +4,22 @@ import { updateAccessToken, logout } from '../store/authSlice';
 
 const api = axios.create({
   baseURL: '',
-  withCredentials: true, 
 });
 
 api.interceptors.request.use((config) => {
   const state = store.getState();
-  const token = state.authController.accessToken;
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  const accessToken = state.authController.accessToken;
+  const refreshToken = state.authController.refreshToken;
+
+  if (config.url.includes('/signup') || config.url.includes('/login')) {
+    return config;
+  }
+
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
+  if (refreshToken) {
+    config.headers['X-Refresh-Token'] = refreshToken;
   }
   return config;
 });
@@ -28,15 +36,18 @@ api.interceptors.response.use(
     ) {
       originalRequest._retry = true;
       try {
-        const res = await axios.get('https://your-backend.com/api/refresh-token', {
-          withCredentials: true,
+        const res = await axios.get('https://your-backend.com/api/refresh', {
+          headers: {
+            'X-Refresh-Token': store.getState().authController.refreshToken,
+          },
         });
 
-        const newAccessToken = res.data.accessToken;
-        store.dispatch(updateAccessToken(newAccessToken));
+        if (res.data.accessToken) {
+          store.dispatch(updateAccessToken(res.data.accessToken));
 
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        return axios(originalRequest); 
+          originalRequest.headers.Authorization = `Bearer ${res.data.accessToken}`;
+          return axios(originalRequest);
+        }
       } catch (refreshErr) {
         store.dispatch(logout());
         return Promise.reject(refreshErr);
