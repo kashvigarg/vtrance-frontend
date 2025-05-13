@@ -17,6 +17,8 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.processController.loading);
+  const refreshToken = useSelector((state) => state.authController.refreshToken);
+  const accessToken = useSelector((state) => state.authController.accessToken);
   const processed = useSelector((state) => state.processController.processed);
   const jobId = useSelector((state) => state.processController.jobid);
   const videoId = useSelector((state) => state.processController.videoId);
@@ -33,7 +35,7 @@ const Dashboard = () => {
     if (!loading || !jobId) return;
 
     const checkStatus = async () => {
-      const status = await getJobStatus(jobId);
+      const status = await getJobStatus(jobId, accessToken, refreshToken);
       if (status === "REJECTED") {
         customToast("Sorry, we couldn't process your media :(")
         dispatch(setLoading({ loading: false }))
@@ -41,12 +43,12 @@ const Dashboard = () => {
       } else {
         dispatch(setLoading({ loading: true }));
         if (!streaming) {
-          const downloadUrl = await fetchDownloadVideoUrl(videoId);
+          const downloadUrl = await fetchDownloadVideoUrl(videoId, accessToken, refreshToken);
           const urlRes = downloadUrl.downloadUrl;
           dispatch(setProcessed({ processed: true, downloadUrl: urlRes }))
           return;
         } else {
-          const streamUrl = await fetchStreamVideoUrl(videoId);
+          const streamUrl = await fetchStreamVideoUrl(videoId, accessToken, refreshToken);
           const urlRes = streamUrl.streamUrl;
           dispatch(setProcessed({ processed: true, streamUrl: urlRes }))
         }
@@ -61,7 +63,7 @@ const Dashboard = () => {
       <CustomHeader />
       <div className="dashboard-body">
         {processed && streaming ?
-          <VideoPlayer src={streamUrl} autoPlay />
+          <VideoPlayer src="https://youtu.be/hk1ANYx1w64?si=9JqeaK0SOHpPSG5S" autoPlay />
 
           : <DragDropComponent />}
 

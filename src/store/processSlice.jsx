@@ -63,5 +63,5 @@ const processController = createSlice({
   },
 });
 
-export const { setStreaming, changeTranscodeOptions, setDefaultOptions, setJobId, setLoading, setProcessed } = processController.actions;
+export const { setStreaming, changeTranscodeOptions, setDefaultOptions, setJobId, setLoading, setProcessed, setVideoId } = processController.actions;
 export default processController.reducer;

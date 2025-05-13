@@ -3,19 +3,20 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   user: null,
   accessToken: null,
+  doesUserExist: false,
   refreshToken: null,
   isAuthenticated: false,
 };
 
 const authController = createSlice({
   name: 'authController',
-  initialState,
+  initialState: initialState,
   reducers: {
     setCredentials: (state, action) => {
       const { id, name, email, username} = action.payload;
 
       state.user = { id, name, email, username }; 
-      state.isAuthenticated = false;
+      state.doesUserExist = true;
     },
     setTokens: (state, action) => {
       const {accessToken, refreshToken} = action.payload;
@@ -34,5 +35,5 @@ const authController = createSlice({
   },
 });
 
-export const { setCredentials, logout, updateAccessToken } = authController.actions;
+export const { setCredentials, logout, updateAccessToken, setTokens } = authController.actions;
 export default authController.reducer;

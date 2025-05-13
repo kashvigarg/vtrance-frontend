@@ -12,17 +12,19 @@ const Profile = () => {
   const { user } = useSelector((state) => state.authController);
 
   const dispatch = useDispatch();
+    const refreshToken = useSelector((state) => state.authController.refreshToken);
+    const accessToken = useSelector((state) => state.authController.accessToken);
   const navigate = useNavigate();
 
   const fetchVideos = async () => {
     try {
-      // setLoading(true);
-      // res = await getUserVideos();
-      // setVideos(res);
+      setLoading(true);
+      res = await getUserVideos(accessToken, refreshToken);
+      setVideos(res);
     } catch (error) {
       customToast("Failed to fetch user videos :(");
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   };
 

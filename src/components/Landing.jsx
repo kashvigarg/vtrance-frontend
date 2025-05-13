@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../App.css";
 import Login from "./ui/Login";
 import Signup from "./ui/Signup";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const Landing = () => {
   const [isLogin, setIsLogin] = useState(false);
+  const user = useSelector((state) => state.authController.doesUserExist);
+
+  useEffect(() => {
+    if (user) {
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+    }
+  }, [user]);
 
   return (
     <div className="app-container">
@@ -16,14 +26,14 @@ const Landing = () => {
         On demand Video Transcoding & Streaming{" "}
       </h1>
       <br />
-      {isLogin ? (
+      {isLogin || user ? (
         <div>
           <Login />
           <span>
             Not a registered user?{" "}
             <span
               onClick={() => setIsLogin(false)}
-              style={{color:"blue", cursor:"pointer"}}
+              style={{ color: "blue", cursor: "pointer" }}
             >
               <u>Sign Up Now</u>
             </span>
@@ -36,7 +46,7 @@ const Landing = () => {
             Already have an Account?{" "}
             <span
               onClick={() => setIsLogin(true)}
-              style={{color:"blue", cursor:"pointer"}}
+              style={{ color: "blue", cursor: "pointer" }}
             >
               <u>Login</u>
             </span>

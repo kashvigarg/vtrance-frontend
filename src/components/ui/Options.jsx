@@ -43,11 +43,15 @@ const Options = () => {
 
   const handleVideoUpload = async () => {
     if (!fileUrl) return;
-    const res = await uploadVideo(fileName, mode, outputFormat, codecFormat, resolution, fileHeight, fileType);
+    try {
+      const res = await uploadVideo(fileName, mode, outputFormat, codecFormat, resolution, fileHeight, fileType);
     const jobid = res.jobid;
     dispatch(setJobId(jobid));
     dispatch(setStreaming({mode: "transcoding"}))
     dispatch(setLoading({loading: true}));
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -105,6 +109,9 @@ const Options = () => {
                   value={out}
                   checked={outputFormat === out}
                   onChange={() => {
+                    if (!(codecFormat in codecformats)){
+                        dispatch(changeTranscodeOptions({codecFormat: codecformats[0]}))
+                      }
                     if (out === "WebM") {
                       dispatch(changeTranscodeOptions({ outputFormat: out, codecFormat: "VP9" }));
                     } else {
@@ -160,7 +167,7 @@ const Options = () => {
         </div>
       )}
       <br /><br />
-      <button onClick={() => { handleVideoUpload }} title="Proceed">
+      <button onClick={() => { handleVideoUpload() }} title="Proceed">
         Proceed
       </button>
     </div>

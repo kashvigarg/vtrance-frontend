@@ -1,6 +1,8 @@
 import '../../App.css'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
+import { signupUser } from '../../services/authService';
+import { setCredentials } from '../../store/authSlice';
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -17,9 +19,8 @@ const Signup = () => {
     };
 
     try {
-      // const result = await signupUser(data);
-      // dispatch(setCredentials(result)); 
-      navigate("/dashboard")
+      const result = await signupUser(data);
+      dispatch(setCredentials(result)); 
     } catch (err) {
       console.error('Signup failed', err);
       alert('Signup failed');
