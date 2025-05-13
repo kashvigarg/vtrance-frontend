@@ -17,9 +17,8 @@ const CustomHeader = () => {
     return (
         <div className="dashboard-header">
         { location.pathname === "/dashboard" ?
-        <button onClick={() => goToLoc("/profile")}>Profile</button> : null }
-        { location.pathname === "/profile" ?
-                <button onClick={() => goToLoc("/dashboard")}>Dashboard</button> : null}
+        <button onClick={() => goToLoc("/profile")}>Profile</button> : 
+                <button onClick={() => goToLoc("/dashboard")}>Dashboard</button> }
         <h1 className="sub-heading">V-Trance</h1>
         <button onClick={() => logoutUser()} className="logout-button">
           <img src="./icons/logout.png" alt="" className="logout-icon" />

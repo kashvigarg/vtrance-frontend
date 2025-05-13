@@ -54,7 +54,7 @@ const VideoPlayer = ({ src, autoPlay = false, controls = true }) => {
       autoPlay={autoPlay}
             height={315}
       width={560}
-      style={{ borderRadius: '12px' }}
+      style={{ borderRadius: '12px' ,padding:"30px"}}
     />
   );
 };
