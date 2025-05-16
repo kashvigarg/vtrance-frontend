@@ -1,70 +1,41 @@
-import apiFetch from './api';
+import api from './api';
+import { getOutputExtension } from '../components/utils/helperMethods';
 
-const getUploadUrl = async (videoName, type, resolution, refreshToken, accessToken) => {
+export const getUploadUrl = async (videoName, type, resolution) => {
   const input = {
     "name":videoName,
     "type":type, 
     "resolution":resolution
   }
-  const res = await apiFetch('/tranceapi/upload-Url', {
-    method: "POST",
-    body: JSON.stringify(input)
-  //   headers: {
-  //   'Authorization': accessToken,
-  //   'X-Refresh-Token': refreshToken
-  // }
-  });
-  // name, videoid, uploadurl
-  console.log(res)
-  return res; 
+  const res = await api.post('/tranceapi/upload-Url', 
+    JSON.stringify(input)
+  );
+  return {"url": res.data.uploadurl, "videoid": res.data.videoid}; 
 }
 
-export const uploadVideo = async (videoName, processType, outputFmt, codecFmt, resolution, videoHeight, videoType, refreshToken, accessToken) => {
-  // upload video to the upload url
-  urlResponse = await getUploadUrl(videoName, videoType, videoHeight);
-  // get videoid
-  
-  // notify upload
-
-  // TODO update output with extension
+export const notifyUpload = async (processType, outputFmt, codecFmt, resolution, videoId) => {
+  let outputExt = getOutputExtension(outputFmt)
   const data = {
     "videoId" : videoId,
     "type" : processType.toUpperCase(),
     "options" : {
-      "output" : outputFmt,
+      "output" : outputExt,
       "codec" : codecFmt,
       "resolution" : resolution,
     }
   }
-  const res = await api.post('/tranceapi/notifyUpload', data, {
-  //   headers: {
-  //   'Authorization': accessToken,
-  //   'X-Refresh-Token': refreshToken
-  // }
-  });
-  // jobid
+  const res = await api.post('/tranceapi/notifyUpload', data);
   return res.data; 
 }
 
-export const getUserVideos = async (accessToken, refreshToken) => {
-    const res = await api.get('/tranceapi/getVideos', userId, {
-  //   headers: {
-  //   'Authorization': accessToken,
-  //   'X-Refresh-Token': refreshToken
-  // }
-  }); 
-    // list of [name, url]
+export const getUserVideos = async () => {
+    const res = await api.get('/tranceapi/getVideos', userId); 
     return res.data; 
 };
 
-export const getJobStatus = async (jobId, accessToken, refreshToken) => {
+export const getJobStatus = async (jobId) => {
   const poll = async () => {
-    const res = await api.get(`/tranceapi/jobStatus/${jobId}`, {
-  //   headers: {
-  //   'Authorization': accessToken,
-  //   'X-Refresh-Token': refreshToken
-  // }
-  });
+    const res = await api.get(`/tranceapi/jobStatus/${jobId}`);
     const status = res.data?.status;
 
     if (status === "REJECTED" || status === "COMPLETED") {
@@ -79,27 +50,14 @@ export const getJobStatus = async (jobId, accessToken, refreshToken) => {
 };
 
 
-export const fetchStreamVideoUrl = async(videoId, accessToken, refreshToken) => {
-  const res = await api.get(`/tranceapi/fetchVideo/${videoId}`, {
-  //   headers: {
-  //   'Authorization': accessToken,
-  //   'X-Refresh-Token': refreshToken
-  // }
-  })
+export const fetchStreamVideoUrl = async(videoId) => {
+  const res = await api.get(`/tranceapi/fetchVideo/${videoId}`)
 
   return res.data;
-  // name
-  // stream url
 }
 
-export const fetchDownloadVideoUrl = async(videoId, refreshToken, accessToken) => {
-  const res = await api.get(`/tranceapi/downloadVideo/${videoId}`, {
-  //   headers: {
-  //   'Authorization': accessToken,
-  //   'X-Refresh-Token': refreshToken
-  // }
-  })
+export const fetchDownloadVideoUrl = async(videoId) => {
+  const res = await api.get(`/tranceapi/downloadVideo/${videoId}`)
 
   return res.data;
-  // download url
 }

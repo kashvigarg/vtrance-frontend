@@ -1,19 +1,16 @@
-import apiFetch from './api';
+import api from './api';
 
 export const loginUser = async (credentials) => {
-  const res = await apiFetch('/user/login',{
-    method:"POST",
-    body: JSON.stringify(credentials)
-  });
+  const res = await api.post('/user/login',
+    JSON.stringify(credentials)
+  );
   
-  return res; 
+  return res.data; 
 };
 
 export const signupUser = async (formData) => {
-    const res = await apiFetch('/user/signup',{
-    method:"POST",
-    body: JSON.stringify(formData)
-  }); 
-    return res;
+    const res = await api.post('/user/signup',
+    JSON.stringify(formData)); 
+    return res.data;
 };
   
