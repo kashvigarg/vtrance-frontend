@@ -57,3 +57,23 @@ export const getValidCodecFormats = (videoFormat : string) : string[] => {
   if (!(videoFormat in codecMap)) return [];
   return codecMap[videoFormat]
 }
+
+export const getOutputExtension = (outputFmt: string) : string => {
+  const outputMap: {[key: string] : string} = {
+    "MP4" : ".mp4",
+    "WebM" : ".webm",
+    "MKV" : ".mkv",
+  }
+
+  return outputMap[outputFmt];
+}
+
+export async function getFileFromUrl(fileUrl, fileName = 'video.mp4') {
+  const response = await fetch(fileUrl);
+  if (!response.ok) throw new Error('Failed to fetch file');
+
+  const blob = await response.blob();
+  const file = new File([blob], fileName, { type: blob.type || 'video/mp4' });
+
+  return file;
+}

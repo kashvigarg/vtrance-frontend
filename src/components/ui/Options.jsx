@@ -1,24 +1,23 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "../../App.css";
 import { useSelector, useDispatch } from "react-redux";
-import CustomLoader from "./CustomLoader";
-import CustomEmbedWidget from "./EmbedWidget";
 import {
   setJobId,
   setStreaming,
   setLoading,
+  setVideoId
 } from "../../store/processSlice";
-import { uploadVideo } from "../../services/videoService";
-import { getValidResolutions, getValidCodecFormats } from "../utils/helperMethods";
+import { notifyUpload, getUploadUrl } from "../../services/videoService";
+import { getValidResolutions, getValidCodecFormats, getFileFromUrl } from "../utils/helperMethods";
 import {
   changeTranscodeOptions,
-  setDefaultOptions,
 } from "../../store/processSlice";
+import api from "../../services/api";
 
 const outputFormats = ["MP4", "MKV", "WebM", "DASH"];
 
 const Options = () => {
-  const { sDragging,
+  const { isDragging,
     fileUrl,
     fileName,
     fileSize, // MB
@@ -34,21 +33,30 @@ const Options = () => {
     (state) => state.processController.codecFormat
   );
   const resolution = useSelector((state) => state.processController.resolution);
-  const [mode, setMode] = useState("transcode");
+  const [mode, setMode] = useState("transcoding");
   const dispatch = useDispatch();
 
   let resolutions = getValidResolutions(fileHeight);
-  console.log(fileHeight)
   let codecformats = getValidCodecFormats(outputFormat);
 
   const handleVideoUpload = async () => {
     if (!fileUrl) return;
     try {
-      const res = await uploadVideo(fileName, mode, outputFormat, codecFormat, resolution, fileHeight, fileType);
-    const jobid = res.jobid;
-    dispatch(setJobId(jobid));
-    dispatch(setStreaming({mode: "transcoding"}))
-    dispatch(setLoading({loading: true}));
+      const urlResponse = await getUploadUrl(fileName, fileType, fileHeight);
+      dispatch(setVideoId(urlResponse.videoid));
+
+      const file = await getFileFromUrl(fileUrl, fileName)
+
+      const urlRes = await api.put(urlResponse.url, file, {
+        headers: {
+          'Content-Type': fileType
+        }
+      })
+      const res = await notifyUpload(fileName, mode, outputFormat, codecFormat, resolution, fileHeight, fileType, fileUrl, urlResponse.videoid);
+      const jobid = res.jobid;
+      dispatch(setJobId(jobid));
+      dispatch(setStreaming({ mode: mode }))
+      dispatch(setLoading({ loading: true }));
     } catch (error) {
       console.log(error)
     }
@@ -73,11 +81,11 @@ const Options = () => {
         value={mode}
         onChange={(e) => setMode(e.target.value)}
       >
-        <option value="transcode">Transcode Only</option>
+        <option value="transcoding">Transcode Only</option>
         <option value="streaming">Transcode + Stream</option>
       </select>
       <div style={{ paddingBottom: "10px" }} />
-      {mode === "transcode" && (
+      {mode === "transcoding" && (
         <div className="options">
           <div>
             <i>Select Transcoding Format</i>
@@ -109,9 +117,9 @@ const Options = () => {
                   value={out}
                   checked={outputFormat === out}
                   onChange={() => {
-                    if (!(codecFormat in codecformats)){
-                        dispatch(changeTranscodeOptions({codecFormat: codecformats[0]}))
-                      }
+                    if (!(codecFormat in codecformats)) {
+                      dispatch(changeTranscodeOptions({ codecFormat: codecformats[0] }))
+                    }
                     if (out === "WebM") {
                       dispatch(changeTranscodeOptions({ outputFormat: out, codecFormat: "VP9" }));
                     } else {
