@@ -19,9 +19,8 @@ const authController = createSlice({
       state.doesUserExist = true;
     },
     setTokens: (state, action) => {
-      const {accessToken, refreshToken} = action.payload;
-      state.accessToken = accessToken;
-      state.refreshToken = refreshToken;
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
       state.isAuthenticated = true;
     },
     logout: (state) => {
