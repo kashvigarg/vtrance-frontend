@@ -19,7 +19,7 @@ api.interceptors.request.use((config) => {
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
-  if (refreshToken) {
+  if (refreshToken & config.url.includes('/refresh')) {
     config.headers['X-Refresh-Token'] = refreshToken;
   }
   return config;
