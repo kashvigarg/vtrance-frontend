@@ -1,16 +1,32 @@
 import api from './api';
 import { getOutputExtension } from '../components/utils/helperMethods';
 
-export const getUploadUrl = async (videoName, type, resolution) => {
-  const input = {
-    "name":videoName,
-    "type":type, 
-    "resolution":resolution
-  }
-  const res = await api.post('/tranceapi/upload-Url', 
-    JSON.stringify(input)
-  );
-  return {"url": res.data.uploadurl, "videoid": res.data.videoid}; 
+// DEPRECATED
+// export const getUploadUrl = async (videoName, type, resolution) => {
+//   const input = {
+//     "name":videoName,
+//     "type":type, 
+//     "resolution":resolution
+//   }
+//   const res = await api.post('/tranceapi/upload-Url', 
+//     JSON.stringify(input)
+//   );
+//   return {"url": res.data.uploadurl, "videoid": res.data.videoid}; 
+// }
+
+export const uploadVideo = async (videoName, type, resolution, file) => {
+  const formData = new FormData();
+  formData.append('name', videoName)
+  formData.append('type', type)
+  formData.append('resolution', resolution)
+  formData.append('video', file)
+
+  const res = await api.post('/tranceapi/uploadVideo', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  return  res.data;
 }
 
 export const notifyUpload = async (processType, outputFmt, codecFmt, resolution, videoId) => {
@@ -21,7 +37,7 @@ export const notifyUpload = async (processType, outputFmt, codecFmt, resolution,
     "options" : {
       "output" : outputExt,
       "codec" : codecFmt,
-      "resolution" : resolution,
+      "resolution" : resolution.toString(),
     }
   }
   const res = await api.post('/tranceapi/notifyUpload', data);
@@ -29,7 +45,7 @@ export const notifyUpload = async (processType, outputFmt, codecFmt, resolution,
 }
 
 export const getUserVideos = async () => {
-    const res = await api.get('/tranceapi/getVideos', userId); 
+    const res = await api.get('/tranceapi/getVideos'); 
     return res.data; 
 };
 

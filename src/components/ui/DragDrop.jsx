@@ -7,6 +7,7 @@ import {
 } from "../../store/fileSlice";
 import { formatFileSize, getVideoMetadata } from "../utils/helperMethods";
 import customToast from "./CustomToast";
+import { setProcessed, setLoading } from "../../store/processSlice";
 
 const MAX_SIZE = 111e6;
 
@@ -15,6 +16,8 @@ const DragDropComponent = () => {
   const { isDragging, fileUrl, fileName, fileType, fileSize, fileWidth, fileHeight, fileDuration } = useSelector(
     (state) => state.fileController
   );
+  const loading = useSelector((state) => state.processController.loading);
+  const processed = useSelector((state) => state.processController.processed);
   
   const fileInputRef = useRef(null);
 
@@ -72,6 +75,8 @@ const DragDropComponent = () => {
   };
 
   const removeSelectedFile = () => {
+    dispatch(setLoading({loading: false}))
+    dispatch(setProcessed({processed: false}))
     dispatch(clearSelectedFile());
   };
 

@@ -7,7 +7,7 @@ import {
   setLoading,
   setVideoId
 } from "../../store/processSlice";
-import { notifyUpload, getUploadUrl } from "../../services/videoService";
+import { notifyUpload, uploadVideo } from "../../services/videoService";
 import { getValidResolutions, getValidCodecFormats, getFileFromUrl } from "../utils/helperMethods";
 import {
   changeTranscodeOptions,
@@ -42,17 +42,12 @@ const Options = () => {
   const handleVideoUpload = async () => {
     if (!fileUrl) return;
     try {
-      const urlResponse = await getUploadUrl(fileName, fileType, fileHeight);
-      dispatch(setVideoId(urlResponse.videoid));
-
       const file = await getFileFromUrl(fileUrl, fileName)
 
-      const urlRes = await api.put(urlResponse.url, file, {
-        headers: {
-          'Content-Type': fileType
-        }
-      })
-      const res = await notifyUpload(fileName, mode, outputFormat, codecFormat, resolution, fileHeight, fileType, fileUrl, urlResponse.videoid);
+      const urlResponse = await uploadVideo(fileName, fileType, fileHeight, file);
+      dispatch(setVideoId(urlResponse.videoid));
+    
+      const res = await notifyUpload(mode, outputFormat, codecFormat, resolution, urlResponse.videoid);
       const jobid = res.jobid;
       dispatch(setJobId(jobid));
       dispatch(setStreaming({ mode: mode }))
@@ -84,7 +79,7 @@ const Options = () => {
         <option value="transcoding">Transcode Only</option>
         <option value="streaming">Transcode + Stream</option>
       </select>
-      <div style={{ paddingBottom: "10px" }} />
+      <div style={{ paddingBottom: "10px"}} />
       {mode === "transcoding" && (
         <div className="options">
           <div>
