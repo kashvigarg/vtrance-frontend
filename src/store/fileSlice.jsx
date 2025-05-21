@@ -13,7 +13,7 @@ const initialState = {
 
 const fileController = createSlice({
   name: "fileController",
-  initialState,
+  initialState: initialState,
   reducers: {
     setDragging: (state, action) => {
       state.isDragging = action.payload;

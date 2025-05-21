@@ -1,8 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const processController = createSlice({
-  name: "processController",
-  initialState: {
+const initialState = {
     streaming: false,
     streamUrl: '', 
     downloadUrl: '',
@@ -14,11 +12,14 @@ const processController = createSlice({
     codecFormat: 'H.264',
     videoId: null,
     resolution : 480
-  },
+  }
+
+const processController = createSlice({
+  name: "processController",
+  initialState: initialState,
   reducers: {
     setStreaming: (state, action) => {
-      type = action.payload.mode
-      if (type === "transcoding"){
+      if (action.payload.mode === "transcoding"){
         state.streaming = false;
       } else
       state.streaming = true;
@@ -58,10 +59,11 @@ const processController = createSlice({
       }
     },
     setVideoId: (state, action) => {
-      state.videoId = action.payload.videoId;
-    }
+      state.videoId = action.payload;
+    },
+    resetProcessState: () => initialState
   },
 });
 
-export const { setStreaming, changeTranscodeOptions, setDefaultOptions, setJobId, setLoading, setProcessed, setVideoId } = processController.actions;
+export const { setStreaming, changeTranscodeOptions, setDefaultOptions, setJobId, setLoading, setProcessed, setVideoId, resetProcessState } = processController.actions;
 export default processController.reducer;
